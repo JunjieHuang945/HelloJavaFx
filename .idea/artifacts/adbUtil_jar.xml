@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="adbUtil:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/adbUtil_jar</output-path>
+    <root id="archive" name="adbUtil.jar">
+      <element id="module-output" name="adbUtil" />
+    </root>
+  </artifact>
+</component>
