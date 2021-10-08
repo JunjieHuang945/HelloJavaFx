@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -13,9 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import top.foxhome.top.adbutil.bean.CmdKeyBean;
 import top.foxhome.top.adbutil.bean.KeyBean;
-import top.foxhome.top.adbutil.call.OnExecCallBackFinish;
-import top.foxhome.top.adbutil.call.OnExecCallBackText;
-import top.foxhome.top.adbutil.call.OnExecCallBacksText;
+import top.foxhome.top.adbutil.call.OnExecProgressCallBack;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -108,12 +105,7 @@ public class Controller {
             cmdIput.setText(cmds);
         String cmd = "adb version";
         runtimeHelper.exec(cmd,
-                new OnExecCallBackText() {
-                    @Override
-                    public void onCallBack(String msg) {
-                        adbVersion.setText(msg);
-                    }
-                }
+                msg -> adbVersion.setText(msg)
         );
     }
 
@@ -124,12 +116,7 @@ public class Controller {
         String cmd = "adb shell input keyevent " + keyCode;
         appendLog(cmd);
         runtimeHelper.exec(cmd,
-                new OnExecCallBackFinish() {
-                    @Override
-                    public void onCallBack() {
-                        view.setDisable(false);
-                    }
-                }
+                msg -> view.setDisable(false)
         );
     }
 
@@ -139,15 +126,12 @@ public class Controller {
         String inputIp = ipInput.getText();
         String cmd = "adb connect " + inputIp;
         appendLog(cmd);
-        runtimeHelper.exec(cmd, new OnExecCallBackText() {
-            @Override
-            public void onCallBack(String msg) {
-                System.out.println(msg);
-                connectBtn.setDisable(false);
-                mConnfigProperties.setIp(inputIp);
-                mConnfigProperties.save();
-                appendLog(msg);
-            }
+        runtimeHelper.exec(cmd, msg -> {
+            System.out.println(msg);
+            connectBtn.setDisable(false);
+            mConnfigProperties.setIp(inputIp);
+            mConnfigProperties.save();
+            appendLog(msg);
         });
     }
 
@@ -164,12 +148,17 @@ public class Controller {
         if (cmdArr.size() == 0) {
             cmdBtn.setDisable(false);
         } else {
-            runtimeHelper.exec(cmdArr, new OnExecCallBacksText() {
+            cleanLog();
+            runtimeHelper.exec(cmdArr, new OnExecProgressCallBack() {
                 @Override
                 public void onPrepare() {
                     cmdBtn.setDisable(true);
                     cmdIput.setDisable(true);
-                    cleanLog();
+                }
+
+                @Override
+                public void onProgress(String msg) {
+                    appendLog(msg);
                 }
 
                 @Override
@@ -177,13 +166,7 @@ public class Controller {
                     cmdBtn.setDisable(false);
                     cmdIput.setDisable(false);
                 }
-
-                @Override
-                public void onCallBack(String msg) {
-                    appendLog(msg);
-                }
             });
-
         }
 
     }
@@ -193,12 +176,9 @@ public class Controller {
         cleanLog();
         String cmd = "adb kill-server";
         appendLog(cmd);
-        runtimeHelper.exec(cmd, new OnExecCallBackText() {
-            @Override
-            public void onCallBack(String msg) {
-                appendLog(msg);
-                stopBtn.setDisable(false);
-            }
+        runtimeHelper.exec(cmd, msg -> {
+            appendLog(msg);
+            stopBtn.setDisable(false);
         });
     }
 
@@ -207,12 +187,9 @@ public class Controller {
         cleanLog();
         String cmd = "adb start-server";
         appendLog(cmd);
-        runtimeHelper.exec(cmd, new OnExecCallBackText() {
-            @Override
-            public void onCallBack(String msg) {
-                startBtn.setDisable(false);
-                appendLog(msg);
-            }
+        runtimeHelper.exec(cmd, msg -> {
+            startBtn.setDisable(false);
+            appendLog(msg);
         });
     }
 
@@ -223,12 +200,10 @@ public class Controller {
         cleanLog();
         String cmd = "adb shell input text \"" + text + "\"";
         appendLog(cmd);
-        runtimeHelper.exec(cmd, new OnExecCallBackText() {
-            @Override
-            public void onCallBack(String msg) {
-                sendBtn.setDisable(false);
-                appendLog(msg);
-            }
+        System.out.println("sedText:" + Thread.currentThread().getName());
+        runtimeHelper.exec(cmd, msg -> {
+            sendBtn.setDisable(false);
+            appendLog(msg);
         });
         textInput.requestFocus();
     }
@@ -247,6 +222,7 @@ public class Controller {
     private List<String> logs = new LinkedList<String>();
 
     private void appendLog(String str) {
+        if (str == null || str.equals("") || str.equals("\r\n")) return;
         logs.add(str + "\r\n");
         StringBuffer sb = new StringBuffer();
         for (String log : logs) {
@@ -265,12 +241,9 @@ public class Controller {
         cleanLog();
         String cmd = "adb reboot";
         appendLog(cmd);
-        runtimeHelper.exec(cmd, new OnExecCallBackText() {
-            @Override
-            public void onCallBack(String msg) {
-                rebootBtn.setDisable(false);
-                appendLog(msg);
-            }
+        runtimeHelper.exec(cmd, msg -> {
+            rebootBtn.setDisable(false);
+            appendLog(msg);
         });
     }
 
@@ -284,31 +257,21 @@ public class Controller {
         installApk.setDisable(true);
         cleanLog();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("APK", "*.apk")
-        );
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("APK", "*.apk"));
         fileChooser.setTitle("选择APK");
         File mFile = fileChooser.showOpenDialog(ownerWindow);
         if (mFile != null && mFile.exists()) {
             cleanLog();
             String cmd = "adb install -r " + mFile.getAbsoluteFile();
             appendLog(cmd);
-            runtimeHelper.exec(cmd, new OnExecCallBackText() {
-                @Override
-                public void onCallBack(String msg) {
-                    installApk.setDisable(false);
-                    appendLog(msg);
-                }
+            runtimeHelper.exec(cmd, msg -> {
+                installApk.setDisable(false);
+                appendLog(msg);
             });
         }
     }
 
     public void cleanCmd(ActionEvent actionEvent) {
         cmdIput.setText("");
-    }
-
-    public void keepInput(KeyEvent keyEvent) {
-        cmdOutPut.setText(cmdOutPut.getText());
-        return;
     }
 }

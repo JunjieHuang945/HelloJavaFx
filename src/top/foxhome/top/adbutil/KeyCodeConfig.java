@@ -65,7 +65,12 @@ public interface KeyCodeConfig {
                     new CmdKeyBean("启动服务", "adb shell am startservice -n \"包名/服务名\""),
                     new CmdKeyBean("发送广播", "adb shell am broadcast -a 广播action"),
                     new CmdKeyBean("当前活动", "adb shell dumpsys window | grep mCurrentFocus"),
+                    new CmdKeyBean("截屏", "adb shell screencap -p /sdcard/screen.png"),
             },
-            new CmdKeyBean[]{}
+            new CmdKeyBean[]{
+                    new CmdKeyBean("上传文件", "adb push 本地计算机文件 安卓设备文件路径"),
+                    new CmdKeyBean("下载文件", "adb pull 安卓设备文件路径 本地计算机文件"),
+                    new CmdKeyBean("卸载应用", "adb uninstall 包名"),
+            }
     };
 }
