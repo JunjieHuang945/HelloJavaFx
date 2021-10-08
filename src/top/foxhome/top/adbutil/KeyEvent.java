@@ -1,4 +1,4 @@
-package sample;
+package top.foxhome.top.adbutil;
 
 public class KeyEvent {
     /**

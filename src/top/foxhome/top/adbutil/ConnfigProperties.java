@@ -1,4 +1,4 @@
-package sample;
+package top.foxhome.top.adbutil;
 
 import java.io.*;
 import java.util.Properties;
@@ -29,6 +29,14 @@ public class ConnfigProperties {
 
     public String getIp() {
         return mProperties.getProperty("ip");
+    }
+
+    public void setCmds(String cmds) {
+        mProperties.setProperty("cmds", cmds);
+    }
+
+    public String getCmds() {
+        return mProperties.getProperty("cmds");
     }
 
     public void save() {

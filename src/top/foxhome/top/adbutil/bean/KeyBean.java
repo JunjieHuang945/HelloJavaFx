@@ -1,4 +1,4 @@
-package sample;
+package top.foxhome.top.adbutil.bean;
 
 public class KeyBean {
     private String keyName;
