@@ -27,13 +27,14 @@ public class RuntimeHelper {
         mRuntime = Runtime.getRuntime();
     }
 
-    public void exec(List<String> cmds, OnExecProgressCallBack callBack) {
+    public void exec(List<String> cmds, OnExecProgressCallBack<String> callBack) {
         System.out.println("cmds length:" + cmds.size());
         callBack.onPrepare();
         cachedThreadPool.execute(new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
                 for (String cmd : cmds) {
+                    updateMessage(cmd);
                     Process mProcess = null;
                     try {
                         System.out.println("cmds:" + cmd);
@@ -99,20 +100,6 @@ public class RuntimeHelper {
                 super.failed();
             }
         });
-        /*cachedThreadPool.execute(() -> {
-
-            Process mProcess = null;
-            try {
-                mProcess = mRuntime.exec(cmd);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (mProcess != null && callBack != null) {
-                Process finalMProcess = mProcess;
-                Platform.runLater(() -> callBack.onCallBack(finalMProcess));
-            }
-        });*/
-
     }
 
     public String getStringByProcess(Process process) {

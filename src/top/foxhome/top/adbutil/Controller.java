@@ -149,7 +149,7 @@ public class Controller {
             cmdBtn.setDisable(false);
         } else {
             cleanLog();
-            runtimeHelper.exec(cmdArr, new OnExecProgressCallBack() {
+            runtimeHelper.exec(cmdArr, new OnExecProgressCallBack<String>() {
                 @Override
                 public void onPrepare() {
                     cmdBtn.setDisable(true);

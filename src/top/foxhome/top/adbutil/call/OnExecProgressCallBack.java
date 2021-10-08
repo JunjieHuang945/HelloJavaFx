@@ -1,9 +1,9 @@
 package top.foxhome.top.adbutil.call;
 
-public interface OnExecProgressCallBack {
+public interface OnExecProgressCallBack<E> {
     public void onPrepare();
 
-    public void onProgress(String msg);
+    public void onProgress(E e);
 
     public void onFinish();
 }
