@@ -1,5 +1,6 @@
 package top.foxhome.top.adbutil;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import top.foxhome.top.adbutil.call.OnExecCallBack;
 import top.foxhome.top.adbutil.call.OnExecProgressCallBack;
@@ -30,6 +31,7 @@ public class RuntimeHelper {
     public void exec(List<String> cmds, OnExecProgressCallBack<String> callBack) {
         System.out.println("cmds length:" + cmds.size());
         callBack.onPrepare();
+
         cachedThreadPool.execute(new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {

@@ -1,10 +1,12 @@
 package top.foxhome.top.adbutil;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
     private Controller mController;
@@ -16,6 +18,10 @@ public class Main extends Application {
         primaryStage.setTitle("adb窗口工具");
         primaryStage.setScene(new Scene(root, 900, 550));
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            System.exit(0);
+        });
         primaryStage.show();
         mController = loader.getController();
         mController.initView();
