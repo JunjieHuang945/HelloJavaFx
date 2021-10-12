@@ -163,7 +163,7 @@ public class Controller {
         String[] cmds = cmdStr.split("\n");
         List<String> cmdArr = new LinkedList<String>();
         for (String cmd : cmds) {
-            if (cmd.trim().equals("")) continue;
+            if (cmd.startsWith("#") || cmd.trim().equals("")) continue;
             cmdArr.add(cmd.trim());
         }
         if (cmdArr.size() == 0) {

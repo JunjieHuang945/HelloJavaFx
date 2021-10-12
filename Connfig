@@ -2,6 +2,10 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>test</comment>
-<entry key="cmds">adb shell service list</entry>
-<entry key="ip">10.10.1.128</entry>
+<entry key="cmds">adb shell input text 003801000001090006D700692D69C94F;
+adb shell input keyevent 66;
+adb shell input text 9e:02:6f:e0:b2:f2;
+adb shell input keyevent 66;
+adb uninstall net.sunniwell.app.stb.producttest</entry>
+<entry key="ip">10.10.1.141</entry>
 </properties>
