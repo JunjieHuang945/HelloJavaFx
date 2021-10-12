@@ -24,20 +24,29 @@ public class RuntimeHelper {
     }
 
     public void newRuntime() {
-        mRuntime.exit(0);
+        //mRuntime.exit(0);
+        if (mProcess != null) {
+            mProcess.destroy();
+            mProcess = null;
+        }
         mRuntime = Runtime.getRuntime();
+        isRun = false;
     }
+
+    private boolean isRun;
+    private Process mProcess;
 
     public void exec(List<String> cmds, OnExecProgressCallBack<String> callBack) {
         System.out.println("cmds length:" + cmds.size());
+        isRun = true;
         callBack.onPrepare();
 
         cachedThreadPool.execute(new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
                 for (String cmd : cmds) {
+                    if (!isRun) return false;
                     updateMessage(cmd);
-                    Process mProcess = null;
                     try {
                         System.out.println("cmds:" + cmd);
                         mProcess = mRuntime.exec(cmd);
@@ -75,12 +84,13 @@ public class RuntimeHelper {
 
     public void exec(String cmd, OnExecCallBack<String> callBack) {
         System.out.println(cmd);
+        isRun = true;
         cachedThreadPool.execute(new Task<String>() {
             @Override
             protected String call() throws Exception {
                 System.out.println("call:" + cmd);
-                Process mProcess = null;
                 try {
+                    if (!isRun) return null;
                     mProcess = mRuntime.exec(cmd);
                 } catch (IOException e) {
                     e.printStackTrace();

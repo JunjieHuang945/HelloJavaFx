@@ -2,15 +2,6 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>test</comment>
-<entry key="cmds">
-adb shell input keyevent 132
-adb shell input text "11:e8:c6:e9:27:6c"
-adb shell input keyevent 23
-adb shell input text "123456789"
-adb shell input keyevent 23
-adb shell input text "987654399"
-adb shell input keyevent 23
-
-adb shell input keyevent 22</entry>
+<entry key="cmds">adb shell service list</entry>
 <entry key="ip">10.10.1.128</entry>
 </properties>

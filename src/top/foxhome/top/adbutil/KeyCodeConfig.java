@@ -68,6 +68,7 @@ public interface KeyCodeConfig {
                     new CmdKeyBean("截屏", "adb shell screencap -p /sdcard/screen.png"),
             },
             new CmdKeyBean[]{
+                    new CmdKeyBean("查看运行的服务", "adb shell service list"),
                     new CmdKeyBean("上传文件", "adb push 本地计算机文件 安卓设备文件路径"),
                     new CmdKeyBean("下载文件", "adb pull 安卓设备文件路径 本地计算机文件"),
                     new CmdKeyBean("卸载应用", "adb uninstall 包名"),

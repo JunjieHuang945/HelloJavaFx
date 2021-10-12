@@ -28,6 +28,8 @@ public class Controller {
     @FXML
     private Button connectBtn;
     @FXML
+    private Button disconnectBtn;
+    @FXML
     private Button stopBtn;
     @FXML
     private Button startBtn;
@@ -49,6 +51,9 @@ public class Controller {
     private Text adbVersion;
     @FXML
     private GridPane cmdButtGroup;
+    @FXML
+    private Text devicesInfo;
+    private DevicesInfoTask updateDevicesInfoTask;
 
     public Controller() {
         runtimeHelper = new RuntimeHelper();
@@ -107,12 +112,19 @@ public class Controller {
         runtimeHelper.exec(cmd,
                 msg -> adbVersion.setText(msg)
         );
+
+        updateDevicesInfoTask = new DevicesInfoTask(s -> devicesInfo.setText(s));
+        new Thread(updateDevicesInfoTask).start();
     }
 
-
+    /**
+     * 发送按键事件
+     *
+     * @param keyCode
+     * @param view
+     */
     public void sendKeyCode(int keyCode, final Button view) {
         view.setDisable(true);
-        cleanLog();
         String cmd = "adb shell input keyevent " + keyCode;
         appendLog(cmd);
         runtimeHelper.exec(cmd,
@@ -120,9 +132,13 @@ public class Controller {
         );
     }
 
+    /**
+     * 连接设备
+     *
+     * @param actionEvent
+     */
     public void connectDevice(ActionEvent actionEvent) {
         connectBtn.setDisable(true);
-        cleanLog();
         String inputIp = ipInput.getText();
         String cmd = "adb connect " + inputIp;
         appendLog(cmd);
@@ -135,6 +151,11 @@ public class Controller {
         });
     }
 
+    /**
+     * 执行命令
+     *
+     * @param actionEvent
+     */
     public void runCmd(ActionEvent actionEvent) {
         String cmdStr = cmdIput.getText();
         mConnfigProperties.setCmds(cmdStr);
@@ -148,7 +169,6 @@ public class Controller {
         if (cmdArr.size() == 0) {
             cmdBtn.setDisable(false);
         } else {
-            cleanLog();
             runtimeHelper.exec(cmdArr, new OnExecProgressCallBack<String>() {
                 @Override
                 public void onPrepare() {
@@ -171,9 +191,13 @@ public class Controller {
 
     }
 
+    /**
+     * 停止adb
+     *
+     * @param actionEvent
+     */
     public void stopAdb(ActionEvent actionEvent) {
         stopBtn.setDisable(true);
-        cleanLog();
         String cmd = "adb kill-server";
         appendLog(cmd);
         runtimeHelper.exec(cmd, msg -> {
@@ -182,9 +206,13 @@ public class Controller {
         });
     }
 
+    /**
+     * 启动adb
+     *
+     * @param actionEvent
+     */
     public void startAdb(ActionEvent actionEvent) {
         startBtn.setDisable(true);
-        cleanLog();
         String cmd = "adb start-server";
         appendLog(cmd);
         runtimeHelper.exec(cmd, msg -> {
@@ -193,11 +221,15 @@ public class Controller {
         });
     }
 
+    /**
+     * 发送文本
+     *
+     * @param actionEvent
+     */
     public void sedText(ActionEvent actionEvent) {
         sendBtn.setDisable(true);
         String text = textInput.getText();
         textInput.setText("");
-        cleanLog();
         String cmd = "adb shell input text \"" + text + "\"";
         appendLog(cmd);
         System.out.println("sedText:" + Thread.currentThread().getName());
@@ -208,6 +240,11 @@ public class Controller {
         textInput.requestFocus();
     }
 
+    /**
+     * 将命令添加到输入框
+     *
+     * @param cmd
+     */
     private void appendCmd(String cmd) {
         StringBuffer cmdsSb = new StringBuffer(cmdIput.getText());
         if (cmdsSb.length() == 0) {
@@ -221,24 +258,37 @@ public class Controller {
 
     private List<String> logs = new LinkedList<String>();
 
+    /**
+     * 添加log并且显示
+     *
+     * @param str
+     */
     private void appendLog(String str) {
         if (str == null || str.equals("") || str.equals("\r\n")) return;
-        logs.add(str + "\r\n");
+        logs.add(String.format("%s\r\n", str));
         StringBuffer sb = new StringBuffer();
         for (String log : logs) {
             sb.append(log);
         }
         cmdOutPut.setText(sb.toString());
+        cmdOutPut.setScrollTop(Double.MAX_VALUE);
     }
 
+    /**
+     * 清理日志
+     */
     private void cleanLog() {
         logs.clear();
         cmdOutPut.setText("");
     }
 
+    /**
+     * 重启设备
+     *
+     * @param actionEvent
+     */
     public void rebootDevice(ActionEvent actionEvent) {
         rebootBtn.setDisable(true);
-        cleanLog();
         String cmd = "adb reboot";
         appendLog(cmd);
         runtimeHelper.exec(cmd, msg -> {
@@ -253,15 +303,18 @@ public class Controller {
         this.ownerWindow = ownerWindow;
     }
 
+    /**
+     * 安装apk
+     *
+     * @param actionEvent
+     */
     public void installApk(ActionEvent actionEvent) {
         installApk.setDisable(true);
-        cleanLog();
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("APK", "*.apk"));
         fileChooser.setTitle("选择APK");
         File mFile = fileChooser.showOpenDialog(ownerWindow);
         if (mFile != null && mFile.exists()) {
-            cleanLog();
             String cmd = "adb install -r " + mFile.getAbsoluteFile();
             appendLog(cmd);
             runtimeHelper.exec(cmd, msg -> {
@@ -271,7 +324,47 @@ public class Controller {
         }
     }
 
+    /**
+     * 清空命令输入框
+     *
+     * @param actionEvent
+     */
     public void cleanCmd(ActionEvent actionEvent) {
         cmdIput.setText("");
+    }
+
+    /**
+     * 清空日志框
+     *
+     * @param actionEvent
+     */
+    public void cleanLogBtn(ActionEvent actionEvent) {
+        cleanLog();
+    }
+
+    public void disconnectDevice(ActionEvent actionEvent) {
+        {
+            disconnectBtn.setDisable(true);
+            String inputIp = ipInput.getText();
+            String cmd = "adb disconnect " + inputIp;
+            appendLog(cmd);
+            runtimeHelper.exec(cmd, msg -> {
+                System.out.println(msg);
+                disconnectBtn.setDisable(false);
+                mConnfigProperties.setIp(inputIp);
+                mConnfigProperties.save();
+                appendLog(msg);
+            });
+        }
+    }
+
+    public void interruptCmd(ActionEvent actionEvent) {
+        cmdBtn.setDisable(false);
+        cmdIput.setDisable(false);
+        runtimeHelper.newRuntime();
+    }
+
+    public void release() {
+        updateDevicesInfoTask.stopUpdate();
     }
 }

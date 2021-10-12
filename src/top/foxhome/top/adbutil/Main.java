@@ -15,17 +15,18 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent root = loader.load();
-        primaryStage.setTitle("adb窗口工具");
+        primaryStage.setTitle(String.format("%s v%s", AppConfig.appName, AppConfig.version));
         primaryStage.setScene(new Scene(root, 900, 550));
         primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(event -> {
-            event.consume();
-            System.exit(0);
-        });
         primaryStage.show();
         mController = loader.getController();
         mController.initView();
         mController.setOwnerWindow(primaryStage);
+        primaryStage.setOnCloseRequest(event -> {
+            mController.release();
+            event.consume();
+            System.exit(0);
+        });
     }
 
     public static void main(String[] args) {
