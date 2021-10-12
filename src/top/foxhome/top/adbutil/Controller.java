@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -366,5 +368,16 @@ public class Controller {
 
     public void release() {
         updateDevicesInfoTask.stopUpdate();
+    }
+
+    public void getFilePath(DragEvent event) {
+        List<File> files = event.getDragboard().getFiles();
+        if (files == null || files.size() == 0) return;
+        StringBuffer sb = new StringBuffer();
+        sb.append(cmdIput.getText());
+        for (File file : files) {
+            sb.append(file.getAbsolutePath() + " ");
+        }
+        cmdIput.setText(sb.toString());
     }
 }

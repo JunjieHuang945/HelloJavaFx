@@ -76,7 +76,7 @@
     </GridPane>
     <GridPane hgap="10" vgap="10">
         <Label text="命令模式:" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextArea fx:id="cmdIput" maxWidth="400" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextArea onDragExited="#getFilePath" fx:id="cmdIput" maxWidth="430" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <Button fx:id="cmdBtn" mnemonicParsing="false" onAction="#runCmd" text="运行"/>
             <Button fx:id="cleanBtn" mnemonicParsing="false" onAction="#cleanCmd" text="清空"/>
@@ -86,7 +86,7 @@
 
         <GridPane fx:id="cmdButtGroup" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         <Label text="输出日志:" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-        <TextArea wrapText="true" fx:id="cmdOutPut" maxWidth="400" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        <TextArea wrapText="true" fx:id="cmdOutPut" maxWidth="430" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
         <Button fx:id="cleanLogBtn" mnemonicParsing="false" onAction="#cleanLogBtn" text="清空" GridPane.columnIndex="1"
                 GridPane.rowIndex="7"/>
     </GridPane>

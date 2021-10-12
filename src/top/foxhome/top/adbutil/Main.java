@@ -16,7 +16,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle(String.format("%s v%s", AppConfig.appName, AppConfig.version));
-        primaryStage.setScene(new Scene(root, 900, 550));
+        primaryStage.setScene(new Scene(root, 930, 550));
         primaryStage.setResizable(false);
         primaryStage.show();
         mController = loader.getController();
