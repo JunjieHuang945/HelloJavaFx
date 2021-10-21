@@ -2,6 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>test</comment>
-<entry key="cmds">adb shell service list</entry>
-<entry key="ip">10.10.1.141</entry>
+<entry key="cmds">#列如adb push D:\Android\screen.png /sdcard/
+adb push C:\Users\sw\Desktop\1920_1080_60.h265  /sdcard/</entry>
+<entry key="ip">10.10.1.35</entry>
 </properties>

@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -16,7 +15,11 @@ import top.foxhome.top.adbutil.bean.CmdKeyBean;
 import top.foxhome.top.adbutil.bean.KeyBean;
 import top.foxhome.top.adbutil.call.OnExecProgressCallBack;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,6 +63,11 @@ public class Controller {
     public Controller() {
         runtimeHelper = new RuntimeHelper();
         mConnfigProperties = new ConnfigProperties();
+    }
+
+    @FXML
+    private void initialize() {
+        System.out.println("initialize");
     }
 
     /**
@@ -366,10 +374,18 @@ public class Controller {
         runtimeHelper.newRuntime();
     }
 
+    /**
+     * 释放
+     */
     public void release() {
         updateDevicesInfoTask.stopUpdate();
     }
 
+    /**
+     * 文件拖入输入框输入文件地址
+     *
+     * @param event
+     */
     public void getFilePath(DragEvent event) {
         List<File> files = event.getDragboard().getFiles();
         if (files == null || files.size() == 0) return;
@@ -379,5 +395,15 @@ public class Controller {
             sb.append(file.getAbsolutePath() + " ");
         }
         cmdIput.setText(sb.toString());
+    }
+
+    public void gotoHellp(ActionEvent actionEvent) {
+        try {
+            Desktop.getDesktop().browse(new URI("http://foxhome.top/2020/09/19/90.html"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }
