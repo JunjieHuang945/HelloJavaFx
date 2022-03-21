@@ -72,6 +72,7 @@ public interface KeyCodeConfig {
                     new CmdKeyBean("上传文件", "#列如adb push D:\\Android\\screen.png /sdcard/\r\nadb push 本地计算机文件 安卓设备文件路径"),
                     new CmdKeyBean("下载文件", "#列如adb pull /sdcard/screen.png D:\\Android\\screen.png\r\nadb pull 安卓设备文件路径 本地计算机文件"),
                     new CmdKeyBean("卸载应用", "adb uninstall 包名"),
+                    new CmdKeyBean("apk路径", "adb pm path apk包名"),
             }
     };
 }
