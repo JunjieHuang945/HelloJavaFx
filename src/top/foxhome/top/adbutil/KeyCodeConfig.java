@@ -38,6 +38,7 @@ public interface KeyCodeConfig {
                     new KeyBean("菜单", KeyEvent.KEYCODE_MENU),
                     new KeyBean("退格", KeyEvent.KEYCODE_DEL),
                     new KeyBean("回车", KeyEvent.KEYCODE_ENTER),
+                    new KeyBean("Esc", KeyEvent.KEYCODE_ESCAPE),
                     new KeyBean("删除", KeyEvent.KEYCODE_FORWARD_DEL),
                     new KeyBean("设置", KeyEvent.KEYCODE_SETTINGS),
                     new KeyBean("V+", KeyEvent.KEYCODE_VOLUME_UP),
