@@ -89,7 +89,7 @@ public class Controller {
                     mKeyButton.setOnAction((ActionEvent actionEvent) -> {
                         sendKeyCode(columnKey.getKeyCode(), mKeyButton);
                     });
-                    mKeyButton.setMaxSize(45, 30);
+                    mKeyButton.setMinSize(45, 30);
                     keyButtGroup.add(mKeyButton, columnIndex + 1, rowIndex + 1);//int columnIndex, int rowIndex
                 }
             }

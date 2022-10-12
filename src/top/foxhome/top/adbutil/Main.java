@@ -1,12 +1,10 @@
 package top.foxhome.top.adbutil;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class Main extends Application {
     private Controller mController;
@@ -16,7 +14,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle(String.format("%s v%s", AppConfig.appName, AppConfig.version));
-        primaryStage.setScene(new Scene(root, 930, 550));
+        primaryStage.setScene(new Scene(root, 1100, 700));
         primaryStage.setResizable(false);
         primaryStage.show();
         mController = loader.getController();
