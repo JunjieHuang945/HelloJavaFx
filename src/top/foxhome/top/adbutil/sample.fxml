@@ -41,18 +41,36 @@
             </GridPane.margin>
         </VBox>
 
-        <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="发送字符:"/>
-            <TextField fx:id="textInput" maxWidth="250"/>
-            <Button fx:id="sendBtn" mnemonicParsing="false" onAction="#sedText" text="发送">
-                <VBox.margin>
-                    <Insets top="5.0"/>
-                </VBox.margin>
-            </Button>
-            <GridPane.margin>
-                <Insets top="15.0"/>
-            </GridPane.margin>
-        </VBox>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="50">
+            <VBox GridPane.columnIndex="1">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="发送字符:"/>
+                <TextField fx:id="textInput" maxWidth="250"/>
+                <Button fx:id="sendBtn" mnemonicParsing="false" onAction="#sedText" text="发送">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </Button>
+                <GridPane.margin>
+                    <Insets top="15.0"/>
+                </GridPane.margin>
+            </VBox>
+
+            <VBox GridPane.columnIndex="2">
+                <Text fx:id="pkgNameText" strokeType="OUTSIDE" text="设置包名:"/>
+                <TextField fx:id="textSetPackage" maxWidth="250"/>
+                <Button fx:id="setPackage" mnemonicParsing="false" onAction="#setPkgName" text="设置包名">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </Button>
+                <GridPane.margin>
+                    <Insets left="50.0"/>
+                    <Insets top="15.0"/>
+                </GridPane.margin>
+
+            </VBox>
+        </HBox>
+
 
         <VBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="常用按键:"/>
@@ -77,7 +95,8 @@
     </GridPane>
     <GridPane hgap="10" vgap="10">
         <Label text="命令模式:" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextArea onDragExited="#getFilePath" fx:id="cmdIput" maxWidth="450" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextArea onDragExited="#getFilePath" fx:id="cmdIput" maxWidth="450" GridPane.columnIndex="1"
+                  GridPane.rowIndex="2"/>
         <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <Button fx:id="cmdBtn" mnemonicParsing="false" onAction="#runCmd" text="运行"/>
             <Button fx:id="cleanBtn" mnemonicParsing="false" onAction="#cleanCmd" text="清空"/>

@@ -24,11 +24,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Controller {
+    public Text pkgNameText;
     private ConnfigProperties mConnfigProperties;
     @FXML
     private TextField ipInput;
     @FXML
     private TextField textInput;
+    @FXML
+    private TextField textSetPackage;
     private RuntimeHelper runtimeHelper;
     @FXML
     private Button connectBtn;
@@ -40,6 +43,8 @@ public class Controller {
     private Button startBtn;
     @FXML
     private Button sendBtn;
+    @FXML
+    private Button setPackage;
     @FXML
     private Button cmdBtn;
     @FXML
@@ -59,6 +64,8 @@ public class Controller {
     @FXML
     private Text devicesInfo;
     private DevicesInfoTask updateDevicesInfoTask;
+
+    private String mCurrentPackageName;
 
     public Controller() {
         runtimeHelper = new RuntimeHelper();
@@ -251,6 +258,19 @@ public class Controller {
     }
 
     /**
+     * 设置包名
+     *
+     * @param actionEvent
+     */
+    public void setPkgName(ActionEvent actionEvent) {
+        setPackage.setDisable(true);
+        mCurrentPackageName = textSetPackage.getText();
+        pkgNameText.setText("设置包名:" + mCurrentPackageName);
+        setPackage.setDisable(false);
+        textSetPackage.setText("");
+    }
+
+    /**
      * 将命令添加到输入框
      *
      * @param cmd
@@ -263,7 +283,11 @@ public class Controller {
             cmdsSb.append("\r\n");
             cmdsSb.append(cmd);
         }
-        cmdIput.setText(cmdsSb.toString());
+        String currentCmd = cmdsSb.toString();
+        if (currentCmd.contains("%s")) {
+            currentCmd = String.format(cmdsSb.toString(), mCurrentPackageName);
+        }
+        cmdIput.setText(currentCmd);
     }
 
     private List<String> logs = new LinkedList<String>();
@@ -408,4 +432,5 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
 }
