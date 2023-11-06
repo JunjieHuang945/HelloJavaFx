@@ -74,6 +74,12 @@ public interface KeyCodeConfig {
                     new CmdKeyBean("下载文件", "#列如adb pull /sdcard/screen.png D:\\Android\\screen.png\r\nadb pull 安卓设备文件路径 本地计算机文件"),
                     new CmdKeyBean("卸载应用", "adb uninstall 包名"),
                     new CmdKeyBean("apk路径", "adb shell pm path apk包名"),
-            }
+                    new CmdKeyBean("清除缓存", "adb shell pm clear apk包名"),
+            }, new CmdKeyBean[]{
+                    new CmdKeyBean("应用列表", "adb shell pm list"),
+                    new CmdKeyBean("停止应用", "adb shell am force-stop apk包名"),
+                    new CmdKeyBean("分辨率", "adb shell wm size"),
+
+    }
     };
 }

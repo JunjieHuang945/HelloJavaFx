@@ -331,6 +331,8 @@ public class Controller {
                 installApk.setDisable(false);
                 appendLog(msg);
             });
+        } else {
+            installApk.setDisable(false);
         }
     }
 
