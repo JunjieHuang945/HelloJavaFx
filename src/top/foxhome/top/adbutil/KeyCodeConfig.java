@@ -56,6 +56,13 @@ public interface KeyCodeConfig {
                     new KeyBean("7", KeyEvent.KEYCODE_NUMPAD_7),
                     new KeyBean("8", KeyEvent.KEYCODE_NUMPAD_8),
                     new KeyBean("9", KeyEvent.KEYCODE_NUMPAD_9),
+            }, new KeyBean[]{
+                    new KeyBean("红键", KeyEvent.KEYCODE_PROG_RED),
+                    new KeyBean("绿箭", KeyEvent.KEYCODE_PROG_GREEN),
+                    new KeyBean("黄键", KeyEvent.KEYCODE_PROG_YELLOW),
+                    new KeyBean("蓝键", KeyEvent.KEYCODE_PROG_BLUE),
+            }, new KeyBean[]{
+                    new KeyBean("待机", KeyEvent.KEYCODE_POWER),
             },
     };
 
@@ -76,9 +83,9 @@ public interface KeyCodeConfig {
                     new CmdKeyBean("apk路径", "adb shell pm path %s"),
                     new CmdKeyBean("清除缓存", "adb shell pm clear %s"),
             }, new CmdKeyBean[]{
-                    new CmdKeyBean("应用列表", "adb shell pm list"),
-                    new CmdKeyBean("停止应用", "adb shell am force-stop %s"),
-                    new CmdKeyBean("分辨率", "adb shell wm size"),
+            new CmdKeyBean("应用列表", "adb shell pm list"),
+            new CmdKeyBean("停止应用", "adb shell am force-stop %s"),
+            new CmdKeyBean("分辨率", "adb shell wm size"),
 
     }
     };

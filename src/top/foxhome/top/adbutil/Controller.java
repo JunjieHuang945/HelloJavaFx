@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import top.foxhome.top.adbutil.bean.CmdKeyBean;
 import top.foxhome.top.adbutil.bean.KeyBean;
+import top.foxhome.top.adbutil.call.OnExecCallBack;
 import top.foxhome.top.adbutil.call.OnExecProgressCallBack;
 
 import java.awt.*;
@@ -88,7 +89,7 @@ public class Controller {
                 KeyBean columnKey = rowKeys[columnIndex];
                 if (columnKey.getKeyName() == null) {
                     Pane mPane = new Pane();
-                    mPane.setMinSize(30, 20);
+                    mPane.setMinSize(45, 20);
                     keyButtGroup.add(mPane, columnIndex + 1, rowIndex + 1);//int columnIndex, int rowIndex
                 } else {
                     Button mKeyButton = new Button();
@@ -96,7 +97,7 @@ public class Controller {
                     mKeyButton.setOnAction((ActionEvent actionEvent) -> {
                         sendKeyCode(columnKey.getKeyCode(), mKeyButton);
                     });
-                    mKeyButton.setMinSize(45, 30);
+                    mKeyButton.setMaxSize(50, 30);
                     keyButtGroup.add(mKeyButton, columnIndex + 1, rowIndex + 1);//int columnIndex, int rowIndex
                 }
             }
@@ -127,7 +128,20 @@ public class Controller {
             cmdIput.setText(cmds);
         String cmd = "adb version";
         runtimeHelper.exec(cmd,
-                msg -> adbVersion.setText(msg)
+                new OnExecCallBack<String>() {
+                    @Override
+                    public void onCallBack(String msg) {
+                        if (msg.contains("\r\n")){
+                            StringBuilder stringBuffer = new StringBuilder();
+                            String[] arrays = msg.split("\r\n");
+                            for (String line : arrays) {
+                                if (line.toLowerCase().contains("version")) stringBuffer.append(line).append("\r\n");
+                            }
+                            adbVersion.setText(stringBuffer.toString());
+                        } else
+                            adbVersion.setText(msg);
+                    }
+                }
         );
 
         updateDevicesInfoTask = new DevicesInfoTask(s -> devicesInfo.setText(s));
@@ -143,7 +157,7 @@ public class Controller {
     public void sendKeyCode(int keyCode, final Button view) {
         view.setDisable(true);
         String cmd = "adb shell input keyevent " + keyCode;
-        appendLog(cmd);
+//        appendLog(cmd);
         runtimeHelper.exec(cmd,
                 msg -> view.setDisable(false)
         );

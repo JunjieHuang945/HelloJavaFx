@@ -79,17 +79,11 @@
                     <Insets top="5.0"/>
                 </VBox.margin>
             </GridPane>
-            <GridPane.margin>
-                <Insets top="15.0"/>
-            </GridPane.margin>
         </VBox>
         <VBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <Label text="adb版本信息:"/>
             <Text fx:id="adbVersion"/>
             <Hyperlink onAction="#gotoHellp" text="adb安装教程"/>
-            <GridPane.margin>
-                <Insets top="15.0"/>
-            </GridPane.margin>
         </VBox>
 
     </GridPane>
