@@ -83,10 +83,8 @@ public interface KeyCodeConfig {
                     new CmdKeyBean("apk路径", "adb shell pm path %s"),
                     new CmdKeyBean("清除缓存", "adb shell pm clear %s"),
             }, new CmdKeyBean[]{
-            new CmdKeyBean("应用列表", "adb shell pm list"),
-            new CmdKeyBean("停止应用", "adb shell am force-stop %s"),
-            new CmdKeyBean("分辨率", "adb shell wm size"),
-
-    }
+                    new CmdKeyBean("应用列表", "adb shell pm list"),
+                    new CmdKeyBean("分辨率", "adb shell wm size"),
+            }
     };
 }
